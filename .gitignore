@@ -1,0 +1,10 @@
+*.csv
+*.txt
+*.pt
+*.pyc
+*.p
+*.pdf
+*.json
+.DS_Store
+*.nfg
+logs/

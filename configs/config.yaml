@@ -1,0 +1,30 @@
+exp_name: ppo_indi
+env: Switch2-v0
+run_type: meta
+trainer: meta
+share_policy: false 
+output_dir: logs/
+algo: ppo
+cpu: 1
+seed: 0
+steps_per_epoch: 2000
+epochs: 5000
+gamma: 0.99
+clip_ratio: 0.1 
+pi_lr: 0.0001
+train_pi_iters: 10
+train_v_iters: 10
+lam: 0.97
+max_ep_len: 2000
+kl_coeff: 0.001
+entropy_coeff: 0.01
+target_kl: 0.5
+save_freq: 1 
+meta_rollout_epochs: 1 
+gamma: 0.99
+buffer_size: 2000 
+mini_batch_size: 2000
+policy_sharing: True
+model: 
+    hidden_sizes: [128, 128]
+    activation: tanh

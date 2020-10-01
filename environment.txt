@@ -1,0 +1,8 @@
+nashpy
+pyyaml
+tensorboardX
+black
+gym==0.10.5
+mujoco-py==2.0.2.10
+pettingzoo[all]
+autorom

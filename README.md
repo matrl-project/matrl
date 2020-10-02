@@ -4,7 +4,6 @@ conda create -n matrl python=3.7
 conda activate matrl
 install_linux.sh # if linux
 # install_mac.sh # if mac
-pip install -r requirements.txt
 ```
 
 ### Setup mujoco
@@ -31,5 +30,11 @@ python run_experiment.py --config_file=./grid_game_configs/switch_config.yaml --
 ### Mujoco
 ```bash
 python run_experiment.py --config_file=./mujoco_configs/hopper_matrl.yaml --seed=89757 --device=CPU
+# sh run_mujoco_hopper_cpu.sh # for experiment scripts
+```
+
+### Atari
+```bash
+python run_experiment.py --config_file=./atari_configs/pong_matrl.yaml --seed=89757 --device=CPU
 # sh run_mujoco_hopper_cpu.sh # for experiment scripts
 ```

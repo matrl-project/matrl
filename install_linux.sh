@@ -11,3 +11,4 @@ cd ../
 wget https://www.roboti.us/download/mujoco200_linux.zip
 unzip mujoco200_linux 
 mv mujoco200_linux ~/.mujoco/mujoco200
+AutoROM

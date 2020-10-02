@@ -109,7 +109,7 @@ class Trainer:
             os.makedirs(self.save_path)
         # load model
         if self.config["load_model"]:
-            self.restore(self.config["restore_path"])
+            self.restore(self.config["restore_path"], [0, 1])
 
     def train(self):
         pass
@@ -118,7 +118,7 @@ class Trainer:
         for i in range(self.num_agent):
             self.savers[i].save(self.sess, os.path.join(self.save_path, "model_{}.cpt".format(i)) , global_step=step)
 
-    def restore(self, restore_paths):
+    def restore(self, restore_paths, agent_ids):
         for i in range(self.num_agent):
             if restore_paths[i] != "":
-                self.savers[i].restore(self.sess, restore_paths[i])
+                self.savers[agent_ids[i]].restore(self.sess, restore_paths[i])

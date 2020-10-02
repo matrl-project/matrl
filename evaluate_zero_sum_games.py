@@ -14,7 +14,7 @@ def calculate_nash_conv(env, config, arg, devices):
     checkpoint_path = args.checkpoint_path
     with tf.device(device):
         current_trainer = TRAINERs[config["trainer"]](env, n_agents, config)
-        current_trainer.restore(checkpoint_path)
+        current_trainer.restore(checkpoint_path, args.agent_ids)
 
         # to get the current policy evaluate value
         current_values = []
@@ -35,7 +35,7 @@ def calculate_nash_conv(env, config, arg, devices):
         br_values = []
 
         br_trainer = TRAINERs[config["trainer"]](env, n_agents, config)
-        br_trainer.restore(checkpoint_path)
+        br_trainer.restore(checkpoint_path, args.agent_ids)
         br_trainer.rollouts(1, ["original"] * n_agents)
         br_trainer.update_tmp_policies()
 
@@ -48,20 +48,12 @@ def calculate_nash_conv(env, config, arg, devices):
                     br_trainer.sess, np.array(obs[:, j]), "tmp"
                 )
                 br_values.append(values)
-                # br_values[agent].append(br_data[3][-1, agent])
-            # br_ret = [i[-1] for i in br_data[3]]
-            # br_values.append(br_ret)
-
-            # current_values [n_agents x n_states]
             nash_conv = 0
             for i in range(n_agents):
                 nash_conv += sum(
                     np.array(br_values[i][:]) - np.array(current_values[i][:])
                 )
-
-            # nash_conv = sum([b - c] for b,c in zip(br_values ,current_values))
-
-            return nash_conv
+    return nash_conv
 
 
 def calculate_score(env, sess, agents):
@@ -103,16 +95,20 @@ def calculate_population_performance(env, config, args, device):
         for j in range(matrix_size):
             model_checkpoints.append(args.checkpoint_path[i] + "model_{}.cpt-{}".format(i, j))
         checkpoints.append(model_checkpoints)
-    # model_checkpoints_2 = glob.glob(os.path.join(args.checkpoint_path_2, "*.pt"))
-
+    
+    # run simulations with policy pairs
+    num_games = 20 
     trainer = TRAINERs[config["trainer"]](env, n_agents, config)
     for i in range(matrix_size):
         for j in range(matrix_size):
-            if i != j :
-                tf.compat.v1.reset_default_graph()
-                trainer.restore([checkpoints[0][i], checkpoints[1][j]])
+            scores = []
+            tf.compat.v1.reset_default_graph()
+            trainer.restore([checkpoints[0][i], checkpoints[1][j]], args.agent_ids)
+            # each policy pair will play 20 episodes to get the average score
+            for _ in range(num_games):
                 score = calculate_score(env, trainer.sess, trainer.agents)
-                matrix[i][j] = score[0]
+                scores.append(score[0])
+            matrix[i][j] = np.mean(scores)
     return matrix
 
 
@@ -123,6 +119,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--config_file", type=str, default="")
     parser.add_argument("--checkpoint_path", nargs='+', default="")
+    parser.add_argument("--agent_ids", nargs= '+', default="")
     parser.add_argument("--evaluate_method", type=str, default="nash_conv")
     parser.add_argument("--num_games_eval", type=int, default=10)
     parser.add_argument("--output_folder", type=str, default="evaluate_logs")
@@ -147,5 +144,5 @@ if __name__ == "__main__":
         nash_conv = calculate_nash_conv(env, config, args, device)
         print("evaluate score -- nash conv is: ", nash_conv)
     elif args.evaluate_method == "population_performance":
-        matrix = calculate_population_performance(env, config, args, device)
+        matrix = calculate_population_performance( env, config, args, device)
         print(matrix)

@@ -36,7 +36,7 @@ class IndiTrainer(Trainer):
                 self.buf.store_pure_obs(obs_n)
                 obs_n = self.buf.get_rnn_obs(obs_n)
             act_n, val_t_n, logp_t_n = self.get_actions(obs_n, policies)
-            obs_n, rew_n, done_n, _ = self.env.step(act_n)
+            obs_n_next, rew_n, done_n, _ = self.env.step(act_n)
             if type(rew_n) not in [list, np.ndarray]: 
                 rew_n = [rew_n] * self.num_agent
 
@@ -47,6 +47,7 @@ class IndiTrainer(Trainer):
             self.buf.store(obs_n,np.array(act_n), rew_n, val_t_n, logp_t_n)
             self.logger.store({"value": val_t_n}, [i for i in range(self.num_agent)])
 
+            obs_n = obs_n_next
 
             terminal = np.all(done_n)  or (ep_len == self.config["max_ep_len"])
             if terminal or (t == self.local_steps_per_epoch - 1):

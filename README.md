@@ -38,3 +38,12 @@ python run_experiment.py --config_file=./mujoco_configs/hopper_matrl.yaml --seed
 python run_experiment.py --config_file=./atari_configs/pong_matrl.yaml --seed=89757 --device=CPU
 # sh run_mujoco_hopper_cpu.sh # for experiment scripts
 ```
+
+## Run evaluation 
+
+We can evalute the performance of the trained model by playing with the checkpoints to show the policy pair wise scores. The output is a matrix each cell represents the average score for playing for policy i and j. 
+
+Evalute methods: nash_conv | population_performance
+
+```bash
+python evaluate_zero_sum_games.py --config_file=./atari_configs/pong_matrl.yaml --checkpoint_path PATH_TO_AGENT_1_CHECKPOINTS  PATH_TO_AGENT_2_CHECKPOINTS --agent_ids 0 1 --evaluate_method=population_performance 

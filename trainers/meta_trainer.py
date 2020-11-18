@@ -97,7 +97,7 @@ class MetaTrainer(IndiTrainer):
             self.rollouts(self.config["meta_rollout_epochs"], policies)
             # calculate the policy advantage
             data = self.buf.get_tmp()
-            adv_data = data[2][main_agent]
+            adv_data = data[2][:, main_agent]
             # clear the buffer after each rollouts
             self.buf.clear()
             return np.mean(adv_data)
@@ -113,7 +113,7 @@ class MetaTrainer(IndiTrainer):
                     data[4][:, i],
                     policies[i],
                 )
-            adv_data = data[2][main_agent]
+            adv_data = data[2][:, main_agent]
             return np.mean(adv_data) * np.mean(ratio)
 
     def two_player_matrix_constructor(self):

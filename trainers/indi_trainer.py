@@ -146,4 +146,4 @@ class IndiTrainer(Trainer):
 
             if epoch % self.config["save_frequency"] == 0 : 
                 print("--- the model has been saved ---")
-                self.save()
+                self.save(epoch)

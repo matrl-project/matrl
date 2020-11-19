@@ -20,6 +20,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--config_file", type=str, default="")
+    parser.add_argument('--meta', dest='meta', action='store_true')
+    parser.add_argument('--no-meta', dest='meta', action='store_false')
+    parser.set_defaults(meta=True)
+    parser.add_argument('--br', dest='br', action='store_true')
+    parser.add_argument('--no-br', dest='br', action='store_false')
+    parser.set_defaults(br=True)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--device", type=str, default="GPU")
 
@@ -51,7 +57,9 @@ if __name__ == "__main__":
         config["output_dir"] += "-{}".format(config["br"])
     config["output_dir"] += "-{}".format(now.strftime("%Y%m%d%H:%M:%S"))
     config["save_path"] = os.path.join(config["output_dir"], config["save_path"])
-
+    
+    config["meta"] = args.meta 
+    config["br"] = args.br
     env, n_agents, env_info = init_env(config)
 
     print("output folder is: ", config["output_dir"])
@@ -59,3 +67,13 @@ if __name__ == "__main__":
     with tf.device(device):
         trainer = TRAINERs[config["trainer"]](env, env.n_agents, config)
         trainer.train()
+    
+    # create time logging 
+
+    later_time = datetime.now()
+    difference = later_time - now
+    print(later_time.strftime("%Y%m%d%H:%M:%S"))
+    
+    with open(config["output_dir"] + "/" + 'time.txt', 'a') as a_writer:
+        a_writer.write('Total time in seconds: {}'.format(difference.total_seconds() ))
+    

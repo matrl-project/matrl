@@ -94,11 +94,12 @@ class Trainer:
         )
         # save model
         self.savers =[] 
-        for i in range(num_agents):
-            vars_list = tf.compat.v1.get_collection(
-                tf.GraphKeys.GLOBAL_VARIABLES, scope="Agent_{}".format(i)
-            )
-            self.savers.append(tf.train.Saver(vars_list, max_to_keep=100))
+        with tf.device('/cpu:0'):
+            for i in range(num_agents):
+                vars_list = tf.compat.v1.get_collection(
+                    tf.GraphKeys.GLOBAL_VARIABLES, scope="Agent_{}".format(i)
+                )
+                self.savers.append(tf.train.Saver(vars_list, max_to_keep=100))
 
         if self.config["save_path"] is None:
             self.save_path = "/tmp/agents.pickle"

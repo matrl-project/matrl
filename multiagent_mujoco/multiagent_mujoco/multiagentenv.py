@@ -1,13 +1,12 @@
 from collections import namedtuple
-
 import numpy as np
 
 
 def convert(dictionary):
-    return namedtuple("GenericDict", dictionary.keys())(**dictionary)
-
+    return namedtuple('GenericDict', dictionary.keys())(**dictionary)
 
 class MultiAgentEnv(object):
+
     def __init__(self, batch_size=None, **kwargs):
         # Unpack arguments from sacred
         args = kwargs["env_args"]
@@ -17,7 +16,7 @@ class MultiAgentEnv(object):
 
         if getattr(args, "seed", None) is not None:
             self.seed = args.seed
-            self.rs = np.random.RandomState(self.seed)  # initialise numpy random state
+            self.rs = np.random.RandomState(self.seed) # initialise numpy random state
 
     def step(self, actions):
         """ Returns reward, terminated, info """
@@ -75,11 +74,9 @@ class MultiAgentEnv(object):
         raise NotImplementedError
 
     def get_env_info(self):
-        env_info = {
-            "state_shape": self.get_state_size(),
-            "obs_shape": self.get_obs_size(),
-            "n_actions": self.get_total_actions(),
-            "n_agents": self.n_agents,
-            "episode_limit": self.episode_limit,
-        }
+        env_info = {"state_shape": self.get_state_size(),
+                    "obs_shape": self.get_obs_size(),
+                    "n_actions": self.get_total_actions(),
+                    "n_agents": self.n_agents,
+                    "episode_limit": self.episode_limit}
         return env_info

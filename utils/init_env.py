@@ -26,6 +26,8 @@ def init_env(config):
             # env_args["agent_obsk"]=1
         if config["env"] == "Ant-v2":
             env_args["agent_conf"] = "4x2"
+        if config["env"] == "Humanoid-v2":
+            env_args["agent_conf"] = "9|8"
         env = MujocoMulti(env_args=env_args)
         env_info = env.get_env_info()
         n_agents = env_info["n_agents"]

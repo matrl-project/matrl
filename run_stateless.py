@@ -42,9 +42,9 @@ def main():
     games = ["coordination", "anticoordination", "cyclic", "dominance_solvable"]
     iteration = 1000
     lr = 0.02
-    kl_coeff = 200
+    kl_coeff = 100
 
-    config = {"iteration": iteration, "lr": lr, "kl_coeff": kl_coeff, "br_lr": 0.01}
+    config = {"iteration": iteration, "lr": lr, "kl_coeff": kl_coeff, "br_lr": 0.03}
 
     for game_type in games:
         print("------------------{}-----------------".format(game_type))

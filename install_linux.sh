@@ -6,6 +6,7 @@ pip install -e .
 cd ../
 git clone https://github.com/koulanurag/ma-gym.git 
 cd ma-gym 
+git checkout 8eca34e534c0f1f702c49517005bcee0cf3d9a3e
 pip install -e . 
 cd ../
 wget https://www.roboti.us/download/mujoco200_linux.zip

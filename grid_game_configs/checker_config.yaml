@@ -17,10 +17,11 @@ meta: true
 meta_rollouts: false
 meta_game_ratio_clip: 0.1
 nash_method: "CMAES"
+tmp_rollout_epochs: 1
 gamma: 0.99
 clip_ratio: 0.1
 vf_clip_param: 0.1 
-v_loss_coeff: 0.1
+v_loss_coeff: 1.0
 pi_loss_coeff: 1.0
 pi_lr: 0.002
 br_pi_lr: 0.002

@@ -52,14 +52,15 @@ if __name__ == "__main__":
         config["share_policy"],
         config["seed"],
     )
-
-    if config["trainer"] == "meta":
-        config["output_dir"] += "-{}".format(config["br"])
-    config["output_dir"] += "-{}".format(now.strftime("%Y%m%d%H:%M:%S"))
-    config["save_path"] = os.path.join(config["output_dir"], config["save_path"])
     
     config["meta"] = args.meta 
     config["br"] = args.br
+
+    if config["trainer"] == "meta":
+        config["output_dir"] += "-{}-{}".format(config["meta"], config["br"])
+    config["output_dir"] += "-{}".format(now.strftime("%Y%m%d%H:%M:%S"))
+    config["save_path"] = os.path.join(config["output_dir"], config["save_path"])
+
     env, n_agents, env_info = init_env(config)
 
     print("output folder is: ", config["output_dir"])

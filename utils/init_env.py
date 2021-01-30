@@ -25,9 +25,15 @@ def init_env(config):
             env_args["agent_conf"] = "2x3"
             # env_args["agent_obsk"]=1
         if config["env"] == "Ant-v2":
-            env_args["agent_conf"] = "4x2"
+            env_args["agent_conf"] = "2x4"
         if config["env"] == "Humanoid-v2":
             env_args["agent_conf"] = "9|8"
+        if config["env"] == "HalfCheetah-v2":
+            env_args["agent_conf"] = "2x3"
+        if config["env"] == "Reacher-v2":
+            env_args["agent_conf"] = "2x1"
+        if config["env"] == "Swimmer-v2":
+            env_args["agent_conf"] = "2x1"
         env = MujocoMulti(env_args=env_args)
         env_info = env.get_env_info()
         n_agents = env_info["n_agents"]
